@@ -27,6 +27,39 @@ const modalImg = document.querySelector("[data-modal-img]");
 const modalTitle = document.querySelector("[data-modal-title]");
 const modalText = document.querySelector("[data-modal-text]");
 
+
+document.querySelector('.form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  console.log("sunmit");
+  const formData = new FormData(e.currentTarget);
+  // return;
+  const username = formData.get("fullname");
+  const password = formData.get("email");
+  const message = formData.get("message");
+
+  console.log(username);
+  console.log(password);
+  console.log(message);
+
+  let body = {
+    fullname: username,
+    email: password,
+    message: message
+  }
+
+  fetch('/contact', {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json' // Set the content type to JSON
+    },
+    body: JSON.stringify(body) // Stringify the body
+})
+.then(response => response.json()) // Handle the response
+.then(data =>{ console.log(data); window.location.reload()}) // Log the data
+.catch(error => console.error('Error:', error)); // Handle any errors
+
+})
+
 // modal toggle function
 const testimonialsModalFunc = function () {
   modalContainer.classList.toggle("active");
