@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Data Table CSS -->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css'>
+    <!-- Font Awesome CSS -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css'>
+    <title>Table</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .main_container {
+        background-color: rgb(213, 89, 89);
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+    }
+
+    .table_div {
+        display: none;
+        width: 90%;
+        min-height: 500px;
+        max-height: 90%;
+        overflow-y: auto;
+        font-size: 16px;
+        background-color: antiquewhite;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: lighter;
+        scroll-behavior: smooth;
+        padding: 10px 10px 50px 10px;
+        /* margin-bottom: 20px; */
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .dir {
+        font-weight: bold !important;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #ffffff;
+        padding: 30px;
+        width: 450px;
+        border-radius: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    ::placeholder {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .form button {
+        align-self: flex-end;
+    }
+
+    .flex-column>label {
+        color: #151717;
+        font-weight: 600;
+    }
+
+    .inputForm {
+        border: 1.5px solid #ecedec;
+        border-radius: 10px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.2s ease-in-out;
+        position: relative;
+        /* overflow: hidden; */
+    }
+
+    .input_container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .password_toggle {
+        color: #2d79f3;
+        cursor: pointer;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .password_toggle:hover {
+        text-shadow: 0.5px 0.5px 50px #2d79f3;
+    }
+
+    .input {
+        margin-left: 10px;
+        border-radius: 10px;
+        border: none;
+        width: 80%;
+        height: 100%;
+    }
+
+    .input:focus {
+        outline: none;
+    }
+
+    .inputForm:focus-within {
+        border: 1.5px solid #2d79f3;
+    }
+
+    .passcode-msg {
+        all: unset;
+        color: red;
+        font-size: 12px;
+        position: absolute;
+        bottom: -15px;
+        display: none;
+        font-weight: bold;
+
+    }
+
+    .button-submit {
+        margin: 20px 0 10px 0;
+        background-color: #151717;
+        border: none;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 10px;
+        height: 50px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 580px) {
+        .form {
+            width: 85%;
+            margin-bottom: 200px;
+            padding: 20px;
+            margin: 20px 0 0px 0;
+
+        }
+
+    }
+
+    .wrapper {
+        margin-top: 5vh;
+    }
+
+    .dataTables_filter {
+        float: right;
+    }
+
+    .table-hover>tbody>tr:hover {
+        background-color: #ccffff;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .table {
+            table-layout: fixed;
+            max-width: 100% !important;
+        }
+    }
+
+    thead {
+        background: #ddd;
+    }
+
+    .table td:nth-child(2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .highlight {
+        background: #ffff99;
+    }
+
+    @media only screen and (max-width: 767px) {
+
+        /* Force table to not be like tables anymore */
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+            display: block;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr,
+        tfoot tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        td {
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50% !important;
+        }
+
+        td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        .table td:nth-child(1) {
+            background: #ccc;
+            height: 100%;
+            top: 0;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /*
+  Label the data
+  */
+        td:nth-of-type(1):before {
+            content: "Name";
+        }
+
+        td:nth-of-type(2):before {
+            content: "Position";
+        }
+
+        td:nth-of-type(3):before {
+            content: "Office";
+        }
+
+        td:nth-of-type(4):before {
+            content: "Age";
+        }
+
+        td:nth-of-type(5):before {
+            content: "Start date";
+        }
+
+        td:nth-of-type(6):before {
+            content: "Salary";
+        }
+
+        .dataTables_length {
+            display: none;
+        }
+    }
+</style>
+
+<body >
+    <div class="main_container">
+        <div class="form" id="passcode_container">
+            <div class="flex-column">
+                <label>Pass Code </label>
+            </div>
+            <div class="inputForm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="-64 0 512 512" height="20">
+                    <path
+                        d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0">
+                    </path>
+                    <path
+                        d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0">
+                    </path>
+                </svg>
+                <div class="input_container">
+                    <input placeholder="Enter your Passcode" id="input_passcode" class="input" type="password">
+                    <div class="password_toggle" onclick="passwordToggle(event)"> Show</div>
+                </div>
+                <p class="passcode-msg">Passcode does not match</p>
+            </div>
+            <button class="button-submit" onclick="verifyPassCode()">Verify Passcode</button>
+        </div>
+        <div class="table_div" id="tableDiv">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email </th>
+                        <th>Message</th>
+                        <th>Message Time</th>
+                    </tr>
+                </thead>
+                <tbody class="t-body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+
+
+
+
+
+    const passcode_container = document.getElementById('passcode_container');
+    const passcode_input = document.getElementById('input_passcode');
+    const passcode_msg = document.querySelector('.passcode-msg');
+    const tableDiv = document.getElementById('tableDiv');
+    function initialization_UI() {
+        let authToken = sessionStorage.getItem('authToken');
+
+        tableDiv.style.display = `${authToken ? "block" : "none"}`;
+        passcode_container.style.display = `${authToken ? "none" : "flex"}`
+
+        if (!authToken) {
+            passcode_input.focus()
+        }
+        else {
+            setTimeout(() => {
+                fillTable();
+                
+                
+            }, 1000);
+        }
+
+    }
+    initialization_UI();
+
+    const fillTable = async () => {
+        let response = await fetch('/tabledata');
+        let data = await response.json();
+        // console.log(data);
+        let tbody = document.querySelector('.t-body');
+        tbody.innerHTML = "";
+        data.forEach(element => {
+            let tr = document.createElement('tr');
+            let timestamp = new Date(Number(element.timestamp.split(".")[0])).toLocaleString();
+
+            tr.innerHTML = `<td>${element.fullname}</td><td>${element.email}</td><td>${element.message}</td><td>${timestamp}</td>`;
+            tbody.appendChild(tr);
+        })
+    }
+
+    const verifyPassCode = async () => {
+        let input = document.getElementById('input_passcode');
+
+        console.log(input.value);
+
+        let response = await fetch('/verify?pass=' + input.value);
+        let data = await response.json();
+        if (data.message === "success") {
+            sessionStorage.setItem('authToken', data.message);
+            initialization_UI();
+        }
+        else {
+            passcode_msg.style.display = "block";
+            sessionStorage.clear();
+            initialization_UI();
+
+        }
+
+
+    }
+
+
+
+    const passwordToggle = (event) => {
+        let type = passcode_input.type;
+
+        if (type == "password") {
+            event.target.innerHTML = "hide";
+            passcode_input.type = "text"
+        } else {
+            event.target.innerHTML = "show";
+            passcode_input.type = "password"
+
+        }
+    }
+
+
+
+
+
+</script>
+<!-- jQuery -->
+<script src='https://code.jquery.com/jquery-3.7.0.js'></script>
+<!-- Data Table JS -->
+<script src='https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js'></script>
+<script src='https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js'></script>
+
+<script>
+//   document.querySelector(document).ready(function () {
+       
+//     });
+</script>
+
+</html>

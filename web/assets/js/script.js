@@ -55,7 +55,8 @@ document.querySelector('.form').addEventListener('submit', function (e) {
     body: JSON.stringify(body) // Stringify the body
 })
 .then(response => response.json()) // Handle the response
-.then(data =>{ console.log(data); window.location.reload()}) // Log the data
+// .then(data =>{ console.log(data); window.location.reload()}) // Log the data
+.then(data =>{ console.log(data); alert('Thanks for contacting us!'); window.location.reload()}) // Log the data
 .catch(error => console.error('Error:', error)); // Handle any errors
 
 })
