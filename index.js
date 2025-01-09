@@ -3,6 +3,9 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import { JSONFilePreset } from 'lowdb/node';
 import { nanoid } from 'nanoid';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Initialize database
 const defaultData = { messages: [] };
@@ -59,6 +62,7 @@ app.post('/contact', (req, res) => {
     res.json({ message: "failed", status: "failed" });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
