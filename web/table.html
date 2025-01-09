@@ -343,11 +343,14 @@
         let response = await fetch('/tabledata');
         let data = await response.json();
         // console.log(data);
+        let messages = data.message;
+        // console.log(messages)
+        messages.reverse();
         let tbody = document.querySelector('.t-body');
         tbody.innerHTML = "";
-        data.forEach(element => {
+        messages.forEach(element => {
             let tr = document.createElement('tr');
-            let timestamp = new Date(Number(element.timestamp.split(".")[0])).toLocaleString();
+            let timestamp = new Date(Number(element.timestamp)).toLocaleString();
 
             tr.innerHTML = `<td>${element.fullname}</td><td>${element.email}</td><td>${element.message}</td><td>${timestamp}</td>`;
             tbody.appendChild(tr);
