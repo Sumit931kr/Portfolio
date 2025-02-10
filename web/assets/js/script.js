@@ -37,9 +37,9 @@ document.querySelector('.form').addEventListener('submit', function (e) {
   const password = formData.get("email");
   const message = formData.get("message");
 
-  console.log(username);
-  console.log(password);
-  console.log(message);
+  // console.log(username);
+  // console.log(password);
+  // console.log(message);
 
   let body = {
     fullname: username,

@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { JSONFilePreset } from 'lowdb/node';
 import { nanoid } from 'nanoid';
 import dotenv from 'dotenv';
+import sendEmail from './controller/sendEmail.js';
 
 dotenv.config();
 
@@ -51,19 +52,39 @@ app.get('/tabledata', (req, res) => {
   }
 });
 
-app.post('/contact', (req, res) => {
+
+app.post('/contact', async (req, res) => {
   const { fullname, email, message } = req.body;
   if (fullname && email && message) {
-    const id = nanoid();
-    db.data.messages.push({ id, fullname, email, message, timestamp: Date.now() });
-    db.write();
-    res.json({ message: "success", status: "success" });
+    try {
+
+      const id = nanoid();
+      db.data.messages.push({ id, fullname, email, message, timestamp: Date.now() });
+      db.write();
+
+      res.json({ message: "success", status: "success" });
+      await sendEmail(fullname, email, message)
+      console.log("saved successfully ")
+
+    } catch (error) {
+      console.log("error " + error)
+    }
   } else {
     res.json({ message: "failed", status: "failed" });
   }
 });
 
 
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+});
+

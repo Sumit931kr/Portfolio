@@ -2,3 +2,4 @@
 .env
 /database/message.db
 ./db.json
+/db.json
