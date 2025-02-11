@@ -319,6 +319,10 @@
     const passcode_input = document.getElementById('input_passcode');
     const passcode_msg = document.querySelector('.passcode-msg');
     const tableDiv = document.getElementById('tableDiv');
+
+
+    let input = document.getElementById('input_passcode');
+
     function initialization_UI() {
         let authToken = sessionStorage.getItem('authToken');
 
@@ -330,9 +334,7 @@
         }
         else {
             setTimeout(() => {
-                fillTable();
-                
-                
+                fillTable();  
             }, 1000);
         }
 
@@ -340,7 +342,11 @@
     initialization_UI();
 
     const fillTable = async () => {
-        let response = await fetch('/tabledata');
+
+
+        let response = await fetch('/tabledata', {headers:{
+            authToken: `${sessionStorage.getItem('authToken')}`
+        }})
         let data = await response.json();
         // console.log(data);
         let messages = data.message;
@@ -358,14 +364,14 @@
     }
 
     const verifyPassCode = async () => {
-        let input = document.getElementById('input_passcode');
+      
 
         console.log(input.value);
 
         let response = await fetch('/verify?pass=' + input.value);
         let data = await response.json();
         if (data.message === "success") {
-            sessionStorage.setItem('authToken', data.message);
+            sessionStorage.setItem('authToken', btoa(input.value));
             initialization_UI();
         }
         else {
@@ -377,6 +383,12 @@
 
 
     }
+    
+    input.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            verifyPassCode()
+        }
+    })
 
 
 

@@ -44,6 +44,11 @@ app.get('/table', (req, res) => {
 
 app.get('/tabledata', (req, res) => {
   try {
+    const token = req.header('authToken');
+
+    console.log(token)
+
+    if (atob(token) !== passCode) { return res.json({ message: "failed", status: "failed" }); }
     const { messages } = db.data;
     res.json({ message: messages, status: "success" });
   } catch (error) {
@@ -64,7 +69,7 @@ app.post('/contact', async (req, res) => {
 
       res.json({ message: "success", status: "success" });
       await sendEmail(fullname, email, message)
-      console.log("saved successfully ")
+      // console.log("saved successfully ")
 
     } catch (error) {
       console.log("error " + error)
