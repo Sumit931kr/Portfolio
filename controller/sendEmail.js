@@ -2,15 +2,20 @@ import nodemailer from 'nodemailer'
 
 const sendEmail = async (name, email, message) => {
     // Create a transporter object using the default SMTP transport
+    // let transporter = nodemailer.createTransport({
+    //     service: 'gmail', // You can use other services like 'yahoo', 'outlook', etc.
+    //     auth: {
+    //         user: process.env.EMAIL, // Your email address
+    //         pass: process.env.PASSWORD   // Your email password or app-specific password
+    //     },
+    // });
     let transporter = nodemailer.createTransport({
-        service: 'gmail', // You can use other services like 'yahoo', 'outlook', etc.
+        service: 'smtp.zoho.com', // You can use other services like 'yahoo', 'outlook', etc.
+        port: 465,
         auth: {
             user: process.env.EMAIL, // Your email address
             pass: process.env.PASSWORD   // Your email password or app-specific password
         },
-  //      debug: true,  // Enable debug logs
-//        logger: true  // Log SMTP communication
-    
     });
 
 
@@ -114,14 +119,9 @@ const sendEmail = async (name, email, message) => {
         const mailForUser = await transporter.sendMail(mailOptionsForUser)
         const mailForMe = await transporter.sendMail(mailOptionsForMe)
 
-        // console.log('Email sent: ', mailForUser.messageId);
-        // console.log('Email sent: ', mailForMe.messageId)
     } catch (error) {
         console.log('Error occurred: ', error);
     }
-
-
-    console.log("sendEmail function finished")
 
 }
 

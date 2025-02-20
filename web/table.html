@@ -343,7 +343,6 @@
 
     const fillTable = async () => {
 
-
         let response = await fetch('/tabledata', {headers:{
             authToken: `${sessionStorage.getItem('authToken')}`
         }})
@@ -364,10 +363,6 @@
     }
 
     const verifyPassCode = async () => {
-      
-
-        console.log(input.value);
-
         let response = await fetch('/verify?pass=' + input.value);
         let data = await response.json();
         if (data.message === "success") {
@@ -380,7 +375,6 @@
             initialization_UI();
 
         }
-
 
     }
     

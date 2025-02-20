@@ -30,17 +30,10 @@ const modalText = document.querySelector("[data-modal-text]");
 
 document.querySelector('.form').addEventListener('submit', function (e) {
   e.preventDefault();
-  console.log("sunmit");
   const formData = new FormData(e.currentTarget);
-  // return;
   const username = formData.get("fullname");
   const password = formData.get("email");
   const message = formData.get("message");
-
-  // console.log(username);
-  // console.log(password);
-  // console.log(message);
-
   let body = {
     fullname: username,
     email: password,
@@ -55,8 +48,7 @@ document.querySelector('.form').addEventListener('submit', function (e) {
     body: JSON.stringify(body) // Stringify the body
 })
 .then(response => response.json()) // Handle the response
-// .then(data =>{ console.log(data); window.location.reload()}) // Log the data
-.then(data =>{ console.log(data); alert('Thank you for reaching out! I’ll get back to you as soon as possible.'); window.location.reload()}) // Log the data
+.then(data =>{ alert('Thank you for reaching out! I’ll get back to you as soon as possible.'); window.location.reload()}) // Log the data
 .catch(error => console.error('Error:', error)); // Handle any errors
 
 })
@@ -173,10 +165,6 @@ for (let i = 0; i < formInputs.length; i++) {
 // page navigation variables
 const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
-
-// console.log(navigationLinks)
-// console.log(pages)
-
 // add event to all nav link
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
